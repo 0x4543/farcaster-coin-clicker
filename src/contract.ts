@@ -1,34 +1,16 @@
 import { ethers } from 'ethers';
 
-export const CONTRACT_ADDRESS = '0x69cc7429b12587a700c52197ad2f296f9aaa9ffd';
-
-export const CONTRACT_ABI = [
-  { inputs: [], name: 'mint', outputs: [], stateMutability: 'nonpayable', type: 'function' },
-  {
-    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
-    name: 'balanceOf',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
-    name: 'tokenURI',
-    outputs: [{ internalType: 'string', name: '', type: 'string' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
+const CONTRACT_ADDRESS = '0xbf584627d7050e9c3c34ed9bdeb404b2db6d97a1';
+const ABI = [
+  'function mint() public',
+  'function balanceOf(address owner) view returns (uint256)',
+  'function tokenURI(uint256 tokenId) view returns (string)',
 ];
 
-export const getContract = (signer: ethers.Signer) =>
-  new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+export function getContract(signer: ethers.Signer) {
+  return new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+}
 
-export const getReadContract = (provider: ethers.Provider) =>
-  new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+export function getReadContract(provider: ethers.BrowserProvider) {
+  return new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+}

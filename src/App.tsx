@@ -3,7 +3,6 @@ import { PrivyProvider, usePrivy, useWallets } from '@privy-io/react-auth';
 import ChartCanvas from './components/ChartCanvas';
 import CoinBurst from './components/CoinBurst';
 import { getContract, getReadContract } from './contract';
-import { getEip1193Provider, ensureBaseSepolia, BASE_SEPOLIA } from './wallet';
 import { ethers } from 'ethers';
 import './styles.css';
 
@@ -27,11 +26,10 @@ function MainApp() {
     if (!ready || !connected || !wallets[0]) return;
     (async () => {
       try {
-        const eip = await getEip1193Provider(wallets[0]);
-        await ensureBaseSepolia(eip);
+        const eip = await wallets[0].getEthereumProvider();
         const provider = new ethers.BrowserProvider(eip);
-        const net = await provider.getNetwork();
-        if (Number(net.chainId) !== BASE_SEPOLIA.chainIdDec) return;
+        const network = await provider.getNetwork();
+        if (network.chainId !== 8453n) return;
         const rc = getReadContract(provider);
         const bal: bigint = await rc.balanceOf(walletAddr);
         setMinted(bal > 0n);
@@ -48,7 +46,7 @@ function MainApp() {
   };
 
   const openFarcasterComposer = (text: string) => {
-    const url = `https://farcaster.xyz/~/compose?text=${encodeURIComponent(text)}`;
+    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
   };
 
@@ -63,16 +61,28 @@ function MainApp() {
   };
 
   const handleCommunity = () => {
-    window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
+    window.open('https://warpcast.com/~/search?query=%23coinclicker', '_blank');
   };
 
   const handleMint = async () => {
     try {
       if (!connected || !wallets[0]) return;
       setMinting(true);
-      const eip = await getEip1193Provider(wallets[0]);
-      await ensureBaseSepolia(eip);
-      const provider = new ethers.BrowserProvider(eip);
+      const wallet = wallets[0];
+      const eipProvider = await wallet.getEthereumProvider();
+      let provider = new ethers.BrowserProvider(eipProvider);
+      let network = await provider.getNetwork();
+      const isFarcasterWallet = wallet.walletClientType === 'privy';
+
+      if (!isFarcasterWallet && network.chainId !== 8453n) {
+        await eipProvider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0x2105' }],
+        });
+        provider = new ethers.BrowserProvider(eipProvider);
+        network = await provider.getNetwork();
+      }
+
       const signer = await provider.getSigner();
       const rc = getReadContract(provider);
       const bal: bigint = await rc.balanceOf(walletAddr);
@@ -81,6 +91,7 @@ function MainApp() {
         setMinting(false);
         return;
       }
+
       const contract = getContract(signer);
       const tx = await contract.mint();
       await tx.wait();
@@ -161,7 +172,7 @@ export default function App() {
       appId={import.meta.env.VITE_PRIVY_APP_ID}
       config={{
         embeddedWallets: { ethereum: { createOnLogin: 'users-without-wallets' } },
-        loginMethods: ['farcaster', 'wallet'],
+        loginMethods: ['farcaster'],
       }}
     >
       <MainApp />
