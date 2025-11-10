@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjUzNjg3NywidHlwZSI6ImF1dGgiLCJrZXkiOiIweDZFYTBEQUQxNkM5RDFEMUI0NDg4MTk5MTI4ODQwM2Y2MUFBZjEwYWMifQ",
+    "payload": "eyJkb21haW4iOiJmYXJjYXN0ZXItY29pbi1jbGlja2VyLnZlcmNlbC5hcHAifQ",
+    "signature": "JFRiCIQsy5FTAN8+KTd3fvovxckKVzCmrAZE9FF7B81D++URzTf7ZhnpIK87A0PwRp4WMFxa7XtkolNeeWCYoRw="
+  },
   "version": "1",
   "name": "Coin Clicker",
   "homeUrl": "https://farcaster-coin-clicker.vercel.app/",
