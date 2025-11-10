@@ -1,0 +1,1 @@
+"use strict";exports.MfaAuthTotpEnroll={path:"/api/v1/mfa_auth/totp/enroll",method:"POST"},exports.MfaAuthTotpInit={path:"/api/v1/mfa_auth/totp/init",method:"POST"},exports.MfaAuthTotpUnenroll={path:"/api/v1/mfa_auth/totp/unenroll",method:"POST"},exports.MfaAuthTotpVerify={path:"/api/v1/mfa_auth/totp/verify",method:"POST"};

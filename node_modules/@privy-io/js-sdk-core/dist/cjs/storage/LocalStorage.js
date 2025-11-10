@@ -1,0 +1,1 @@
+"use strict";exports.LocalStorage=class{async get(e){let t=localStorage.getItem(e);return null===t?void 0:JSON.parse(t)}put(e,t){void 0!==t?localStorage.setItem(e,JSON.stringify(t)):this.del(e)}del(e){localStorage.removeItem(e)}getKeys(){return Object.entries(localStorage).map((([e])=>e))}};

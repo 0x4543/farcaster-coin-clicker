@@ -1,0 +1,1 @@
+import{signMessage as s}from"./action/crossApp/wallet/signMessage.mjs";import{signTypedData as a}from"./action/crossApp/wallet/signTypedData.mjs";import{sendTransaction as o}from"./action/crossApp/wallet/sendTransaction.mjs";var e=/*#__PURE__*/Object.freeze({__proto__:null,sendTransaction:o,signMessage:s,signTypedData:a});export{e as i};

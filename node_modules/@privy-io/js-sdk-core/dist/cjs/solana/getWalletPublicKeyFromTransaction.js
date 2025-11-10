@@ -1,0 +1,1 @@
+"use strict";var e=require("./isVersionedTransaction.js");exports.getWalletPublicKeyFromTransaction=function(s,t){let i=(e.isVersionedTransaction(s)?s.message:s.compileMessage()).staticAccountKeys.find((e=>e.toBase58()===t));if(!i)throw Error(`Transaction does not contain public key ${t}`);return i};

@@ -1,0 +1,1 @@
+"use strict";var e=require("./embedded-wallets.js");exports.getAllUserEmbeddedEthereumWallets=t=>t?t.linked_accounts.filter(e.isEmbeddedWalletAccount).filter((e=>"ethereum"===e.chain_type)).sort(((e,t)=>e.wallet_index-t.wallet_index)):[];

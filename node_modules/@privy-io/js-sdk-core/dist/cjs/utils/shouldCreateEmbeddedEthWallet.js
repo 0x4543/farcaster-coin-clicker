@@ -1,0 +1,1 @@
+"use strict";var e=require("./getAllUserEmbeddedEthereumWallets.js");require("./embedded-wallets.js");exports.shouldCreateEmbeddedEthWallet=(l,t)=>!("off"===t||e.getAllUserEmbeddedEthereumWallets(l).length>0||l.linked_accounts.filter((e=>"wallet"===e.type&&"ethereum"===e.chain_type)).length>0&&"all-users"!==t);

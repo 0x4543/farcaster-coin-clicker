@@ -1,0 +1,1 @@
+"use strict";var e=require("./getAllUserEmbeddedSolanaWallets.js");require("./embedded-wallets.js");exports.getUserEmbeddedSolanaWallet=l=>e.getAllUserEmbeddedSolanaWallets(l).find((e=>0===e.wallet_index))??null;

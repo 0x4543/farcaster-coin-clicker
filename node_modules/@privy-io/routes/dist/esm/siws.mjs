@@ -1,0 +1,1 @@
+const t={path:"/api/v1/siws/init",method:"POST"},i={path:"/api/v1/siws/authenticate",method:"POST"},a={path:"/api/v1/siws/link",method:"POST"},h={path:"/api/v1/siws/unlink",method:"POST"};export{i as SiwsAuthenticate,t as SiwsInit,a as SiwsLink,h as SiwsUnlink};

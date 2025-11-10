@@ -1,0 +1,1 @@
+const a={path:"/api/v1/mfa/passkeys/init",method:"POST"},e={path:"/api/v1/mfa/passkeys/verify",method:"POST"},p={path:"/api/v1/mfa/passkeys/enrollment",method:"POST"};export{p as MfaPasskeyEnrollment,a as MfaPasskeyInit,e as MfaPasskeyVerify};

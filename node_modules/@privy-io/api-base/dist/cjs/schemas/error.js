@@ -1,0 +1,1 @@
+"use strict";var r=require("zod"),o=require("../constants/error-codes.js");const e=r.z.object({error:r.z.string(),cause:r.z.string().optional(),code:r.z.nativeEnum(o.PrivyErrorCode).optional()});exports.APIError=e;

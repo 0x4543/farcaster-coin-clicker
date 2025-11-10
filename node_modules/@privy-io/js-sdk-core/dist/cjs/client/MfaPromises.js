@@ -1,0 +1,1 @@
+"use strict";function e(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}Object.defineProperty(exports,"__esModule",{value:!0});var t=/*#__PURE__*/e(require("eventemitter3"));class r extends t.default{constructor(){super(),this.rootPromise={current:null},this.submitPromise={current:null}}}exports.default=r;

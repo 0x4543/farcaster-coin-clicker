@@ -1,0 +1,1 @@
+"use strict";exports.SiweAuthenticate={path:"/api/v1/siwe/authenticate",method:"POST"},exports.SiweInit={path:"/api/v1/siwe/init",method:"POST"},exports.SiweLink={path:"/api/v1/siwe/link",method:"POST"},exports.SiweLinkSmartWallet={path:"/api/v1/siwe/link_smart_wallet",method:"POST"},exports.SiweUnlink={path:"/api/v1/siwe/unlink",method:"POST"};

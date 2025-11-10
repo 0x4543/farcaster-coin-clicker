@@ -1,0 +1,1 @@
+"use strict";exports.TelegramAuthenticate={path:"/api/v1/telegram/authenticate",method:"POST"},exports.TelegramLink={path:"/api/v1/telegram/link",method:"POST"},exports.TelegramUnlink={path:"/api/v1/telegram/unlink",method:"POST"};

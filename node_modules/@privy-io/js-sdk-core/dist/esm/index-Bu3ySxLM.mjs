@@ -1,0 +1,1 @@
+import{loginWithCrossAppAuth as o}from"./action/crossApp/loginWithCrossAppAuth.mjs";import{linkWithCrossAppAuth as p}from"./action/crossApp/linkWithCrossAppAuth.mjs";import{i as s}from"./index-DTAjYY8z.mjs";var t=/*#__PURE__*/Object.freeze({__proto__:null,linkWithCrossAppAuth:p,loginWithCrossAppAuth:o,wallet:s});export{t as i};

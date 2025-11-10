@@ -1,0 +1,1 @@
+const t={path:"/api/v1/telegram/authenticate",method:"POST"},e={path:"/api/v1/telegram/link",method:"POST"},a={path:"/api/v1/telegram/unlink",method:"POST"};export{t as TelegramAuthenticate,e as TelegramLink,a as TelegramUnlink};

@@ -1,0 +1,1 @@
+import r from"canonicalize";import{PrivyClientError as e}from"../Error.mjs";async function i(i,o){let t=r(o);if(void 0===t)throw new e({error:"Failed to prepare the payload for signing",code:"invalid_input"});let a=Buffer.from(t).toString("base64"),{signature:n}=await i({message:a});return{signature:n}}export{i as generateAuthorizationSignature};

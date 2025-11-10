@@ -1,0 +1,1 @@
+const n=({address:n,nonce:o,domain:t,uri:e})=>`${t} wants you to sign in with your Solana account:\n${n}\n\n${`You are proving you own ${n}.`}\n\nURI: ${e}\nVersion: 1\nChain ID: mainnet\nNonce: ${o}\nIssued At: ${(new Date).toISOString()}\nResources:\n- https://privy.io`;export{n as createSiwsMessage};

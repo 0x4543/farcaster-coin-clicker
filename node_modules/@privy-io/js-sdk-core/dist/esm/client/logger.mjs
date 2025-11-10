@@ -1,0 +1,1 @@
+import{noop as e}from"../utils/noop.mjs";let o={NONE:Number.NEGATIVE_INFINITY,ERROR:1,WARN:2,INFO:3,DEBUG:Number.POSITIVE_INFINITY};const r=({level:r}={level:"ERROR"})=>({get level(){return r},error:o[r]>=o.ERROR?console.error:e,warn:o[r]>=o.WARN?console.warn:e,info:o[r]>=o.INFO?console.info:e,debug:o[r]>=o.DEBUG?console.debug:e});export{r as toConsoleLogger};

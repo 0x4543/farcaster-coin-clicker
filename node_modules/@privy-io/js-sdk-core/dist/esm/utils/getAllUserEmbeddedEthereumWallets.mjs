@@ -1,0 +1,1 @@
+import{isEmbeddedWalletAccount as e}from"./embedded-wallets.mjs";const t=t=>t?t.linked_accounts.filter(e).filter((e=>"ethereum"===e.chain_type)).sort(((e,t)=>e.wallet_index-t.wallet_index)):[];export{t as getAllUserEmbeddedEthereumWallets};

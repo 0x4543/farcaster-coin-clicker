@@ -1,0 +1,1 @@
+"use strict";var s=require("./action/crossApp/wallet/signMessage.js"),e=require("./action/crossApp/wallet/signTypedData.js"),a=require("./action/crossApp/wallet/sendTransaction.js"),n=/*#__PURE__*/Object.freeze({__proto__:null,sendTransaction:a.sendTransaction,signMessage:s.signMessage,signTypedData:e.signTypedData});exports.index=n;

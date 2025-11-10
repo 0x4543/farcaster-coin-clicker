@@ -1,0 +1,1 @@
+"use strict";exports.SiwsAuthenticate={path:"/api/v1/siws/authenticate",method:"POST"},exports.SiwsInit={path:"/api/v1/siws/init",method:"POST"},exports.SiwsLink={path:"/api/v1/siws/link",method:"POST"},exports.SiwsUnlink={path:"/api/v1/siws/unlink",method:"POST"};

@@ -1,0 +1,1 @@
+import{getAllUserEmbeddedEthereumWallets as e}from"./getAllUserEmbeddedEthereumWallets.mjs";import"./embedded-wallets.mjs";const t=(t,l)=>!("off"===l||e(t).length>0||t.linked_accounts.filter((e=>"wallet"===e.type&&"ethereum"===e.chain_type)).length>0&&"all-users"!==l);export{t as shouldCreateEmbeddedEthWallet};

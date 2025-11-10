@@ -1,0 +1,1 @@
+"use strict";var e=require("./getAllUserEmbeddedSolanaWallets.js");require("./embedded-wallets.js");exports.shouldCreateEmbeddedSolWallet=(l,t)=>!("off"===t||e.getAllUserEmbeddedSolanaWallets(l).length>0||l.linked_accounts.filter((e=>"wallet"===e.type&&"solana"===e.chain_type)).length>0&&"all-users"!==t);

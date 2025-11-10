@@ -1,0 +1,1 @@
+const t={path:"/api/v1/siwe/init",method:"POST"},i={path:"/api/v1/siwe/authenticate",method:"POST"},a={path:"/api/v1/siwe/link",method:"POST"},e={path:"/api/v1/siwe/link_smart_wallet",method:"POST"},h={path:"/api/v1/siwe/unlink",method:"POST"};export{i as SiweAuthenticate,t as SiweInit,a as SiweLink,e as SiweLinkSmartWallet,h as SiweUnlink};

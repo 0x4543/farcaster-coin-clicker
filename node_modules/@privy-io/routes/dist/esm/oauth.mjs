@@ -1,0 +1,1 @@
+const t={path:"/api/v1/oauth/authenticate",method:"POST"},a={path:"/api/v1/oauth/init",method:"POST"},h={path:"/api/v1/oauth/link",method:"POST"},o={path:"/api/v1/oauth/unlink",method:"POST"};export{t as OAuthAuthenticate,a as OAuthInit,h as OAuthLink,o as OAuthUnlink};

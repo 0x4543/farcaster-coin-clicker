@@ -1,0 +1,1 @@
+const t={path:"/api/v1/mfa/totp/enroll",method:"POST"},p={path:"/api/v1/mfa/totp/verify",method:"POST"},a={path:"/api/v1/mfa/totp/init",method:"POST"},o={path:"/api/v1/mfa/totp/unenroll",method:"POST"};export{t as MfaTotpEnroll,a as MfaTotpInit,o as MfaTotpUnenroll,p as MfaTotpVerify};

@@ -1,0 +1,1 @@
+import{getAllUserEmbeddedSolanaWallets as e}from"./getAllUserEmbeddedSolanaWallets.mjs";import"./embedded-wallets.mjs";const l=l=>e(l).find((e=>0===e.wallet_index))??null;export{l as getUserEmbeddedSolanaWallet};

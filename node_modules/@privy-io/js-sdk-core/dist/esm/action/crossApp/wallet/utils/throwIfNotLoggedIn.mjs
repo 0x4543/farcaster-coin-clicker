@@ -1,0 +1,1 @@
+import{PrivyClientError as e}from"../../../../Error.mjs";function o(o){if(!o)throw new e({code:"attempted_cross_app_request_before_logged_in",error:"Must be logged in to sign messages with a cross-app wallet"})}export{o as throwIfNotLoggedIn};

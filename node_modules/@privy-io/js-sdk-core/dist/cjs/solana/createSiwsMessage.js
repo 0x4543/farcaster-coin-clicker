@@ -1,0 +1,1 @@
+"use strict";exports.createSiwsMessage=({address:n,nonce:e,domain:o,uri:s})=>`${o} wants you to sign in with your Solana account:\n${n}\n\n${`You are proving you own ${n}.`}\n\nURI: ${s}\nVersion: 1\nChain ID: mainnet\nNonce: ${e}\nIssued At: ${(new Date).toISOString()}\nResources:\n- https://privy.io`;

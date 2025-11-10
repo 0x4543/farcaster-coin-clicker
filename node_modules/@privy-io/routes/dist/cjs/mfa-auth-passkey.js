@@ -1,0 +1,1 @@
+"use strict";exports.MfaAuthPasskeyEnrollment={path:"/api/v1/mfa_auth/passkeys/enrollment",method:"POST"},exports.MfaAuthPasskeyInit={path:"/api/v1/mfa_auth/passkeys/init",method:"POST"},exports.MfaAuthPasskeyVerify={path:"/api/v1/mfa_auth/passkeys/verify",method:"POST"};

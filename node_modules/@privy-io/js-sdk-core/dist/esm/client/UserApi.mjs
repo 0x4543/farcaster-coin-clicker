@@ -1,0 +1,1 @@
+import{AcceptTermsOnUser as r}from"@privy-io/routes";class t{async get(){let{user:r}=await this._privyInternal.refreshSession();return{user:r}}async acceptTerms(){return{user:await this._privyInternal.fetch(r,{})}}constructor(r){this._privyInternal=r}}export{t as default};

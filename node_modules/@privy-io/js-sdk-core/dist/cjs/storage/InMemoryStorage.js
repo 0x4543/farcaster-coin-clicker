@@ -1,0 +1,1 @@
+"use strict";exports.InMemoryCache=class{get(e){return this._cache[e]}put(e,t){void 0!==t?this._cache[e]=t:this.del(e)}del(e){delete this._cache[e]}getKeys(){return Object.keys(this._cache)}constructor(){this._cache={}}};

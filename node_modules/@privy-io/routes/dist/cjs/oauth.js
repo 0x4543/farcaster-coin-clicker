@@ -1,0 +1,1 @@
+"use strict";exports.OAuthAuthenticate={path:"/api/v1/oauth/authenticate",method:"POST"},exports.OAuthInit={path:"/api/v1/oauth/init",method:"POST"},exports.OAuthLink={path:"/api/v1/oauth/link",method:"POST"},exports.OAuthUnlink={path:"/api/v1/oauth/unlink",method:"POST"};

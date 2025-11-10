@@ -1,0 +1,1 @@
+import{create as t}from"../../wallet-api/create.mjs";import"@privy-io/routes";async function e({context:e,chainType:i}){return{wallet:await t(e,{request:{chain_type:i,owner_id:void 0}})}}export{e as walletCreate};

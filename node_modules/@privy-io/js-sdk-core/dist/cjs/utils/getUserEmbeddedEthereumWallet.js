@@ -1,0 +1,1 @@
+"use strict";var e=require("./getAllUserEmbeddedEthereumWallets.js");require("./embedded-wallets.js");const l=l=>e.getAllUserEmbeddedEthereumWallets(l).find((e=>0===e.wallet_index))??null,t=l;exports.getUserEmbeddedEthereumWallet=l,exports.getUserEmbeddedWallet=t;

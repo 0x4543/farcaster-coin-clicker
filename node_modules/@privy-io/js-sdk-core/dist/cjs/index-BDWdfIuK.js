@@ -1,0 +1,1 @@
+"use strict";var e=require("./action/delegatedActions/delegateWallet.js"),t=require("./action/delegatedActions/revokeWallets.js"),l=/*#__PURE__*/Object.freeze({__proto__:null,delegateWallet:e.delegateWallet,revokeWallets:t.revokeWallets});exports.index=l;
