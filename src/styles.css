@@ -42,93 +42,6 @@ body {
   color: #aaa;
 }
 
-.leaderboard {
-  margin-top: 16px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 14px;
-  padding: 10px 14px;
-  box-sizing: border-box;
-  transition:
-    box-shadow 0.3s ease,
-    filter 0.3s ease;
-  box-shadow: none;
-}
-
-.leaderboard.refreshing {
-  animation: pulse-sync 0.9s ease-in-out 1;
-  box-shadow: 0 0 16px rgba(155, 122, 255, 0.35);
-}
-
-@keyframes pulse-sync {
-  0%,
-  100% {
-    filter: brightness(1);
-    box-shadow: 0 0 12px rgba(155, 122, 255, 0.22);
-  }
-  50% {
-    filter: brightness(1.18);
-    box-shadow: 0 0 22px rgba(155, 122, 255, 0.42);
-  }
-}
-
-.leaderboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.leaderboard-header h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-}
-
-.refresh-btn {
-  all: unset;
-  cursor: pointer;
-  color: #a78bfa;
-  font-size: 1rem;
-  opacity: 0.9;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    opacity 0.2s ease,
-    background 0.2s ease;
-  padding: 6px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.refresh-btn:hover:not(:disabled) {
-  opacity: 1;
-  background: rgba(167, 139, 250, 0.12);
-  transform: scale(1.06);
-  box-shadow: 0 0 10px rgba(167, 139, 250, 0.25);
-}
-
-.refresh-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.refresh-btn.rotating svg {
-  animation: spin-sync 0.9s ease-in-out 1;
-}
-
-@keyframes spin-sync {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 .main {
   position: relative;
   width: 100%;
@@ -145,6 +58,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .chart-canvas {
@@ -156,6 +70,10 @@ body {
   height: 110%;
   display: block;
   z-index: 1;
+}
+
+.chart-wrap.locked .chart-canvas {
+  opacity: 0.6;
 }
 
 .interaction-box {
@@ -196,24 +114,24 @@ body {
     0 0 30px rgba(91, 58, 191, 0.45);
 }
 
-.locked-circle {
-  cursor: pointer;
-  opacity: 1;
-}
-
 .value-box {
   text-align: center;
   user-select: none;
+  position: relative;
+  z-index: 5;
 }
 
 .value-box span {
-  opacity: 0.7;
+  opacity: 1;
+  color: #fff;
   font-size: 0.9rem;
 }
 
 .value-box h2 {
   margin: 0;
   font-size: 2rem;
+  opacity: 1;
+  color: #fff;
 }
 
 .footer {
@@ -251,4 +169,20 @@ button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.locked-circle {
+  cursor: pointer;
+  opacity: 1;
+}
+
+button,
+.tap-circle {
+  outline: none;
+}
+
+button:focus,
+.tap-circle:focus {
+  outline: none;
+  box-shadow: none;
 }

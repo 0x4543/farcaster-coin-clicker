@@ -1,29 +1,43 @@
-import React, { useRef, useState } from 'react';
-import { PrivyProvider, usePrivy, useWallets, useUser } from '@privy-io/react-auth';
+import React, { useEffect, useRef, useState } from 'react';
+import { PrivyProvider, usePrivy, useWallets } from '@privy-io/react-auth';
 import ChartCanvas from './components/ChartCanvas';
 import CoinBurst from './components/CoinBurst';
-import { BrowserProvider } from 'ethers';
+import { getContract, getReadContract } from './contract';
+import { getEip1193Provider, ensureBaseSepolia, BASE_SEPOLIA } from './wallet';
+import { ethers } from 'ethers';
 import './styles.css';
 
 function MainApp() {
+  const { ready, authenticated, login } = usePrivy();
+  const { wallets } = useWallets();
+
   const [portfolio, setPortfolio] = useState(0);
   const [growth, setGrowth] = useState(false);
   const [tapTrigger, setTapTrigger] = useState(0);
+  const [minting, setMinting] = useState(false);
+  const [minted, setMinted] = useState(false);
+
   const interactRef = useRef<HTMLDivElement>(null);
-  const { ready, authenticated, login } = usePrivy();
-  const { wallets } = useWallets();
-  const { user } = useUser();
 
-  if (!ready)
-    return (
-      <div className="app">
-        <p>Loading...</p>
-      </div>
-    );
-
-  const connected = authenticated && wallets.length > 0;
+  const connected = ready && authenticated && wallets.length > 0;
   const walletAddr = connected ? wallets[0].address : '';
   const shortAddr = walletAddr ? `${walletAddr.slice(0, 6)}...${walletAddr.slice(-4)}` : '';
+
+  useEffect(() => {
+    if (!ready || !connected || !wallets[0]) return;
+    (async () => {
+      try {
+        const eip = await getEip1193Provider(wallets[0]);
+        await ensureBaseSepolia(eip);
+        const provider = new ethers.BrowserProvider(eip);
+        const net = await provider.getNetwork();
+        if (Number(net.chainId) !== BASE_SEPOLIA.chainIdDec) return;
+        const rc = getReadContract(provider);
+        const bal: bigint = await rc.balanceOf(walletAddr);
+        setMinted(bal > 0n);
+      } catch {}
+    })();
+  }, [ready, connected, wallets, walletAddr]);
 
   const handleTap = () => {
     if (!connected) return;
@@ -38,16 +52,8 @@ function MainApp() {
     window.open(url, '_blank');
   };
 
-  const handleShare = async () => {
-    if (!connected || !wallets[0]) return;
-
-    const eipProvider = await wallets[0].getEthereumProvider();
-    const provider = new BrowserProvider(eipProvider);
-    const signer = await provider.getSigner();
-    const message = `CC:${portfolio}:${walletAddr}`;
-    await signer.signMessage(message);
-
-    const tag = `#coinclicker`;
+  const handleShare = () => {
+    const tag = '#coinclicker';
     const text = `🎯 I just grew my portfolio to $${portfolio} in Coin Clicker!\nJoin me and grow yours too.\n\n${tag}`;
     openFarcasterComposer(text);
   };
@@ -60,6 +66,44 @@ function MainApp() {
     window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
   };
 
+  const handleMint = async () => {
+    try {
+      if (!connected || !wallets[0]) return;
+      setMinting(true);
+      const eip = await getEip1193Provider(wallets[0]);
+      await ensureBaseSepolia(eip);
+      const provider = new ethers.BrowserProvider(eip);
+      const signer = await provider.getSigner();
+      const rc = getReadContract(provider);
+      const bal: bigint = await rc.balanceOf(walletAddr);
+      if (bal > 0n) {
+        setMinted(true);
+        setMinting(false);
+        return;
+      }
+      const contract = getContract(signer);
+      const tx = await contract.mint();
+      await tx.wait();
+      setMinted(true);
+      alert('NFT minted successfully!');
+    } catch (err: any) {
+      const msg = String(err?.reason || err?.message || err);
+      if (msg.toLowerCase().includes('already minted')) setMinted(true);
+      console.error(err);
+      alert('Mint failed. Check console for details.');
+    } finally {
+      setMinting(false);
+    }
+  };
+
+  if (!ready) {
+    return (
+      <div className="app">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -69,7 +113,7 @@ function MainApp() {
       </header>
 
       <main className="main">
-        <div className="chart-wrap">
+        <div className={`chart-wrap ${!connected ? 'locked' : ''}`}>
           <ChartCanvas isGrowing={growth} />
           <div ref={interactRef} className="interaction-box">
             <div
@@ -93,11 +137,18 @@ function MainApp() {
       </main>
 
       <footer className="footer">
-        <button className="primary" onClick={handleShare} disabled={!connected || portfolio < 1}>
-          Challenge Friends
+        <button className="secondary" onClick={handleShare}>
+          Share
+        </button>
+        <button
+          className="primary"
+          onClick={handleMint}
+          disabled={!connected || portfolio < 1 || minted || minting}
+        >
+          {minted ? 'Minted' : minting ? 'Minting...' : 'Mint'}
         </button>
         <button className="secondary" onClick={handleCommunity}>
-          Community Results
+          Community
         </button>
       </footer>
     </div>
