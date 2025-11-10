@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { PrivyProvider, usePrivy, useWallets, useUser } from '@privy-io/react-auth';
 import ChartCanvas from './components/ChartCanvas';
 import CoinBurst from './components/CoinBurst';
@@ -45,12 +45,7 @@ function MainApp() {
     const provider = new BrowserProvider(eipProvider);
     const signer = await provider.getSigner();
     const message = `CC:${portfolio}:${walletAddr}`;
-    const signature = await signer.signMessage(message);
-    const sigShort = signature.slice(0, 10);
-
-    const username = user?.farcaster?.username;
-    const fid = user?.farcaster?.fid?.toString() || '0';
-    const idPart = username ? username : `fid${fid}`;
+    await signer.signMessage(message);
 
     const tag = `#coinclicker`;
     const text = `🎯 I just grew my portfolio to $${portfolio} in Coin Clicker!\nJoin me and grow yours too.\n\n${tag}`;
@@ -74,7 +69,7 @@ function MainApp() {
       </header>
 
       <main className="main">
-        <div className={`chart-wrap ${!connected ? 'locked' : ''}`}>
+        <div className="chart-wrap">
           <ChartCanvas isGrowing={growth} />
           <div ref={interactRef} className="interaction-box">
             <div
@@ -94,7 +89,6 @@ function MainApp() {
             </div>
             <CoinBurst trigger={tapTrigger} containerRef={interactRef} />
           </div>
-          {!connected && <div className="overlay-block"></div>}
         </div>
       </main>
 
