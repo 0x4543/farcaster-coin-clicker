@@ -1,40 +1,25 @@
 {
   "headers": [
     {
+      "source": "/.well-known/farcaster.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
-        {
-          "source": "/.well-known/farcaster.json",
-          "headers": [{ "key": "Content-Type", "value": "application/json" }]
-        },
         {
           "key": "Content-Security-Policy",
           "value": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; frame-ancestors https://farcaster.xyz https://*.farcaster.xyz https://*.warpcast.com https://miniapps.farcaster.xyz;"
         },
-        {
-          "key": "X-Frame-Options",
-          "value": "ALLOWALL"
-        },
-        {
-          "key": "Cross-Origin-Opener-Policy",
-          "value": "same-origin-allow-popups"
-        },
-        {
-          "key": "Cross-Origin-Embedder-Policy",
-          "value": "unsafe-none"
-        },
-        {
-          "key": "Cross-Origin-Resource-Policy",
-          "value": "cross-origin"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "no-referrer"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
+        { "key": "X-Frame-Options", "value": "ALLOWALL" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin-allow-popups" },
+        { "key": "Cross-Origin-Embedder-Policy", "value": "unsafe-none" },
+        { "key": "Cross-Origin-Resource-Policy", "value": "cross-origin" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
     }
   ]
