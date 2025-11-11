@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { PrivyProvider, usePrivy, useWallets } from '@privy-io/react-auth';
+import { PrivyProvider, usePrivy } from '@privy-io/react-auth';
 import ChartCanvas from './components/ChartCanvas';
 import CoinBurst from './components/CoinBurst';
 import { sdk } from '@farcaster/miniapp-sdk';
@@ -10,28 +10,35 @@ window.Buffer = Buffer;
 
 function MainApp() {
   const { ready, authenticated, login } = usePrivy();
-  const { wallets } = useWallets();
 
   const [portfolio, setPortfolio] = useState(0);
   const [growth, setGrowth] = useState(false);
   const [tapTrigger, setTapTrigger] = useState(0);
   const [minting, setMinting] = useState(false);
   const [minted, setMinted] = useState(false);
+  const [connected, setConnected] = useState(false);
+  const [walletAddr, setWalletAddr] = useState('');
 
   const interactRef = useRef<HTMLDivElement>(null);
-
-  const connected = ready && authenticated && wallets.length > 0;
-  const walletAddr = connected ? wallets[0].address : '';
-  const shortAddr = walletAddr ? `${walletAddr.slice(0, 6)}...${walletAddr.slice(-4)}` : '';
 
   useEffect(() => {
     (async () => {
       const inMini = await sdk.isInMiniApp();
       if (inMini) {
         await sdk.actions.ready();
+        const provider = await sdk.wallet.getEthereumProvider();
+        if (provider) {
+          const ethersProvider = new ethers.BrowserProvider(provider as any);
+          const signer = await ethersProvider.getSigner();
+          const addr = await signer.getAddress();
+          setWalletAddr(addr);
+          setConnected(true);
+        }
       }
     })();
   }, []);
+
+  const shortAddr = walletAddr ? `${walletAddr.slice(0, 6)}...${walletAddr.slice(-4)}` : '';
 
   const handleTap = () => {
     if (!connected) return;
@@ -63,34 +70,20 @@ function MainApp() {
 
   const handleMint = async () => {
     try {
-      if (!connected || !wallets[0]) return;
       setMinting(true);
 
-      const wallet = wallets[0];
-      const eipProvider = await wallet.getEthereumProvider();
-      let provider = new ethers.BrowserProvider(eipProvider);
-      let network = await provider.getNetwork();
+      const rawProvider = await sdk.wallet.getEthereumProvider();
+      if (!rawProvider) throw new Error('Farcaster provider not available');
+
+      const provider = new ethers.BrowserProvider(rawProvider as any);
+      const network = await provider.getNetwork();
 
       if (network.chainId !== 8453n) {
-        await eipProvider.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: '0x2105',
-              chainName: 'Base',
-              nativeCurrency: { name: 'Base', symbol: 'ETH', decimals: 18 },
-              rpcUrls: ['https://mainnet.base.org'],
-              blockExplorerUrls: ['https://basescan.org'],
-            },
-          ],
-        });
-        provider = new ethers.BrowserProvider(eipProvider);
-        network = await provider.getNetwork();
-        if (network.chainId !== 8453n) throw new Error('Failed to switch to Base');
+        throw new Error('Please switch to Base network inside Farcaster');
       }
 
       const signer = await provider.getSigner();
-      const contractAddress = ethers.getAddress('0xbf584627d7050e9c3c34ed9bdeb404b2db6d97a1');
+      const contractAddress = ethers.getAddress('0xBF584627D7050E9C3C34ED9BDEB404B2DB6D97A1');
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
