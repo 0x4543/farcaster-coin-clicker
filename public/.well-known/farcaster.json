@@ -1,5 +1,5 @@
 {
-  "frame": {
+  "miniapp": {
     "name": "Coin Clicker",
     "version": "1",
     "iconUrl": "https://farcaster-coin-clicker.vercel.app/icon-1024.png",
