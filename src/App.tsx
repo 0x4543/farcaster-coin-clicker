@@ -55,34 +55,26 @@ function MainApp() {
     setTimeout(() => setGrowth(false), 300);
   };
 
-  const openFarcasterComposer = (text: string) => {
-    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
+  const openFarcasterComposer = (text: string, embedUrl: string) => {
+    const base = 'https://warpcast.com/~/compose';
+    const url = `${base}?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(embedUrl)}`;
     window.open(url, '_blank');
   };
 
   const handleShare = () => {
     const tag = '#coinclicker';
-    const text = `🎯 I just grew my portfolio to $${portfolio} in Coin Clicker!\nJoin me and grow yours too.\n\n${tag}`;
-    openFarcasterComposer(text);
+    const appEmbed = 'https://farcaster.xyz/miniapps/DUHyXvDOjMVR/coin-clicker';
+    const text = `🎯 I just grew my portfolio to $${portfolio} in Coin Clicker!\n${tag}`;
+    const composerUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(appEmbed)}`;
+    window.open(composerUrl, '_blank');
   };
 
   const handleConnect = async () => {
     await login();
   };
 
-  const handleCommunity = async () => {
-    const url = 'https://farcaster.xyz/~/search?q=%23coinclicker';
-    try {
-      const inMini = await sdk.isInMiniApp();
-      if (inMini) {
-        await sdk.actions.ready();
-        await sdk.actions.openUrl(url);
-      } else {
-        window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
-      }
-    } catch {
-      window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
-    }
+  const handleCommunity = () => {
+    sdk.actions.openUrl('https://farcaster.xyz/~/search/recent?q=%23coinclicker');
   };
 
   const handleMint = async () => {
