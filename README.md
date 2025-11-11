@@ -1,18 +1,18 @@
 # 🪙 Farcaster Coin Clicker
 
 <p>
-  <a href="https://farcaster.xyz/miniapps/DUHyXvDOjMVR/coin-clicker">
-    <img src="https://img.shields.io/badge/Farcaster-Miniapp-6C47FF?logo=farcaster&logoColor=white" alt="Farcaster Miniapp">
+  <a href="https://farcaster.xyz/miniapps/DUHyXvDOjMVR/coin-clicker" style="text-decoration:none;border:none;">
+    <img src="https://img.shields.io/badge/Farcaster-Miniapp-6C47FF?logo=farcaster&logoColor=white" alt="Farcaster Miniapp" style="border:none;vertical-align:middle;">
   </a>
-  <a href="https://github.com/0x4543/farcaster-coin-clicker">
-    <img src="https://img.shields.io/github/stars/0x4543/farcaster-coin-clicker?style=flat&color=gold" alt="GitHub stars">
+  <a href="https://github.com/0x4543/farcaster-coin-clicker" style="text-decoration:none;border:none;">
+    <img src="https://img.shields.io/github/stars/0x4543/farcaster-coin-clicker?style=flat&color=gold" alt="GitHub stars" style="border:none;vertical-align:middle;">
   </a>
-  <a href="https://github.com/0x4543/farcaster-coin-clicker/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
+  <a href="https://github.com/0x4543/farcaster-coin-clicker/blob/main/LICENSE" style="text-decoration:none;border:none;">
+    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License" style="border:none;vertical-align:middle;">
   </a>
-  <img src="https://img.shields.io/badge/framework-React-blue.svg" alt="React">
-  <img src="https://img.shields.io/badge/built%20with-Privy%20SDK-orange.svg" alt="Privy SDK">
-  <img src="https://img.shields.io/badge/network-Base-0052FF.svg" alt="Base Network">
+  <img src="https://img.shields.io/badge/framework-React-blue.svg" alt="React" style="border:none;vertical-align:middle;">
+  <img src="https://img.shields.io/badge/built%20with-Privy%20SDK-orange.svg" alt="Privy SDK" style="border:none;vertical-align:middle;">
+  <img src="https://img.shields.io/badge/network-Base-0052FF.svg" alt="Base Network" style="border:none;vertical-align:middle;">
 </p>
 
 **Farcaster Coin Clicker** is a playful Farcaster Mini App where users grow their virtual portfolio and mint an NFT on the **Base** network. Built for fun, engagement, and to explore the creative potential of Farcaster Mini Apps.
