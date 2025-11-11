@@ -5,12 +5,31 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors https://farcaster.xyz https://*.farcaster.xyz https://*.warpcast.com"
+          "value": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; frame-ancestors https://farcaster.xyz https://*.farcaster.xyz https://*.warpcast.com https://miniapps.farcaster.xyz;"
         },
-        { "key": "Referrer-Policy", "value": "no-referrer" },
         {
-          "key": "Permissions-Policy",
-          "value": "camera=(),microphone=(),geolocation=(),payment=()"
+          "key": "X-Frame-Options",
+          "value": "ALLOWALL"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        },
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "unsafe-none"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy",
+          "value": "cross-origin"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
         }
       ]
     }
