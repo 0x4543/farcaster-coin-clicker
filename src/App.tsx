@@ -103,8 +103,7 @@ function MainApp() {
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
       try {
-        const gas = await contract.mint.estimateGas();
-        const tx = await contract.mint({ gasLimit: gas });
+        const tx = await contract.mint({ gasLimit: 150000 });
         await tx.wait();
         setMinted(true);
         alert('NFT minted successfully!');
