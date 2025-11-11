@@ -12,9 +12,16 @@
   "splashBackgroundColor": "#0c0c10",
   "subtitle": "Tap to grow your balance",
   "description": "Simple tap game with onchain mint on Base",
-  "requiredChains": ["eip155:8453"],
+  "primaryCategory": "games",
   "tags": ["games", "base", "nft"],
-  "ogTitle": "Coin Clicker",
-  "ogDescription": "Tap to grow and mint a free badge on Base",
-  "ogImageUrl": "https://farcaster-coin-clicker.vercel.app/og-1024x682.png"
+  "previewImageUrl": "https://farcaster-coin-clicker.vercel.app/og-1024x682.png",
+  "heroImageUrl": "https://farcaster-coin-clicker.vercel.app/og-1024x682.png",
+  "socialShareImageUrl": "https://farcaster-coin-clicker.vercel.app/og-1024x682.png",
+  "socialShareTitle": "Coin Clicker — grow your balance on Base",
+  "socialShareDescription": "Tap, grow, and mint your free onchain badge in Coin Clicker on Base.",
+  "marketingTagline": "Simple tap game with real Base minting",
+  "buttonTitle": "Open Mini App",
+  "castShareUrl": "https://warpcast.com/~/compose?text=Check+out+Coin+Clicker+on+Base!&embeds[]=https://farcaster-coin-clicker.vercel.app",
+  "requiredChains": ["eip155:8453"],
+  "webhookUrl": "https://farcaster-coin-clicker.vercel.app/api/webhook"
 }
