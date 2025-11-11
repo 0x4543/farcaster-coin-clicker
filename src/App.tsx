@@ -111,9 +111,11 @@ function MainApp() {
       alert('NFT minted successfully!');
     } catch (err: any) {
       const msg = String(err?.reason || err?.message || err);
-      if (msg.toLowerCase().includes('already minted')) setMinted(true);
+      if (msg.toLowerCase().includes('already minted')) {
+        setMinted(true);
+      }
       console.error(err);
-      alert('Mint failed. Check console for details.');
+      alert(`Mint failed:\n${msg}`);
     } finally {
       setMinting(false);
     }
