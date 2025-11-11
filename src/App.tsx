@@ -78,14 +78,15 @@ function MainApp() {
       const eipProvider = await wallet.getEthereumProvider();
       let provider = new ethers.BrowserProvider(eipProvider);
       let network = await provider.getNetwork();
-      const isFarcasterWallet = wallet.walletClientType === 'privy';
 
-      if (!isFarcasterWallet && network.chainId !== 8453n) {
+      if (network.chainId !== 8453n) {
         await eipProvider.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: '0x2105' }],
         });
         provider = new ethers.BrowserProvider(eipProvider);
+        network = await provider.getNetwork();
+        if (network.chainId !== 8453n) throw new Error('Network switch to Base failed');
       }
 
       const signer = await provider.getSigner();
@@ -96,9 +97,7 @@ function MainApp() {
       alert('NFT minted successfully!');
     } catch (err: any) {
       const msg = String(err?.reason || err?.message || err);
-      if (msg.toLowerCase().includes('already minted')) {
-        setMinted(true);
-      }
+      if (msg.toLowerCase().includes('already minted')) setMinted(true);
       console.error(err);
       alert(`Mint failed:\n${msg}`);
     } finally {
