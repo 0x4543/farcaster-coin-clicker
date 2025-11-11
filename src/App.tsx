@@ -88,10 +88,13 @@ function MainApp() {
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
       try {
-        const tx = await contract.mint({ gasLimit: 150000 });
-        await tx.wait();
-        setMinted(true);
-        alert('NFT minted successfully!');
+        const tx = await contract.mint();
+        if (tx?.hash) {
+          setMinted(true);
+          alert('NFT minted successfully!');
+        } else {
+          throw new Error('Transaction did not return a hash');
+        }
       } catch (err: any) {
         if (err.code === 'ACTION_REJECTED') {
           alert('Transaction cancelled by user.');
