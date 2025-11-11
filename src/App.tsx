@@ -41,9 +41,17 @@ function MainApp() {
         const network = await provider.getNetwork();
         if (network.chainId !== 8453n) return;
         const rc = getReadContract(provider);
-        const bal: bigint = await rc.balanceOf(walletAddr);
+        let bal = 0n;
+        try {
+          bal = await rc.balanceOf(walletAddr);
+        } catch (err: any) {
+          if (String(err).includes('BAD_DATA') || String(err).includes('0x')) bal = 0n;
+          else throw err;
+        }
         setMinted(bal > 0n);
-      } catch {}
+      } catch (err) {
+        console.error('Balance check failed', err);
+      }
     })();
   }, [ready, connected, wallets, walletAddr]);
 
