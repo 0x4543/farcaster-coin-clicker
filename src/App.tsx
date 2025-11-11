@@ -80,8 +80,18 @@ function MainApp() {
     await login();
   };
 
-  const handleCommunity = () => {
-    sdk.actions.openUrl('https://farcaster.xyz/~/search/recent?q=%23coinclicker');
+  const handleCommunity = async () => {
+    const url = 'https://warpcast.com/~/search?query=%23coinclicker';
+    try {
+      const inMini = await sdk.isInMiniApp();
+      if (inMini) {
+        await sdk.actions.openUrl(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    } catch (err) {
+      window.open(url, '_blank');
+    }
   };
 
   const handleMint = async () => {
