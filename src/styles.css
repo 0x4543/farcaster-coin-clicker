@@ -122,6 +122,53 @@ body {
     0 0 30px rgba(91, 58, 191, 0.45);
 }
 
+.tap-circle:after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent 42%,
+    rgba(175, 145, 255, 0.45) 50%,
+    transparent 58%
+  );
+  transform: translateX(-120%) rotate(25deg);
+  opacity: 0;
+  pointer-events: none;
+  animation: shimmer 35s infinite ease-in-out;
+  animation-delay: calc(10s + (50s * random()));
+}
+
+.tap-circle:active:after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes shimmer {
+  0%,
+  10%,
+  17%,
+  28%,
+  41%,
+  57%,
+  74%,
+  90%,
+  100% {
+    transform: translateX(-120%) rotate(25deg);
+    opacity: 0;
+  }
+  12%,
+  30%,
+  60%,
+  92% {
+    transform: translateX(120%) rotate(25deg);
+    opacity: 0.5;
+  }
+}
+
 .value-box {
   text-align: center;
   user-select: none;
