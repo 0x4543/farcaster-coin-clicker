@@ -34,26 +34,33 @@ interface Props {
 export default function CoinBurst({ trigger, containerRef }: Props) {
   const [coins, setCoins] = useState<Coin[]>([]);
   const [glows, setGlows] = useState<BorderGlow[]>([]);
-  const [bounds, setBounds] = useState({ w: 0, h: 0 });
   const [ready, setReady] = useState(false);
   const [perf, setPerf] = useState(1);
   const raf = useRef<number | null>(null);
   const iconsRef = useRef<string[]>([]);
   const fpsCheck = useRef({ t: performance.now(), frames: 0 });
-  const isMobile = window.innerWidth < 768;
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+  const boundsRef = useRef({ w: 0, h: 0 });
+  const lastTriggerRef = useRef<number>(0);
 
   useEffect(() => {
-    if (containerRef.current) {
+    const updateBounds = () => {
+      if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      setBounds({ w: rect.width, h: rect.height });
-    }
+      boundsRef.current = { w: rect.width, h: rect.height };
+    };
+    updateBounds();
+    window.addEventListener('resize', updateBounds);
+    return () => window.removeEventListener('resize', updateBounds);
   }, [containerRef]);
 
   useEffect(() => {
-    const srcs = ICONS.filter(x => typeof x === 'string' && x.trim().length > 0 && !/\/wbt\.svg$/i.test(x));
+    const srcs = ICONS.filter(
+      (x) => typeof x === 'string' && x.trim().length > 0 && !/\/wbt\.svg$/i.test(x)
+    );
     let checked = 0;
     const ok: string[] = [];
-    srcs.forEach(src => {
+    srcs.forEach((src) => {
       const img = new Image();
       img.onload = () => {
         ok.push(src);
@@ -75,9 +82,14 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
   }, []);
 
   useEffect(() => {
-    if (!bounds.w || !bounds.h) return;
+    if (!ready) return;
+    if (iconsRef.current.length === 0) return;
     if (trigger === 0) return;
-    if (!ready || iconsRef.current.length === 0) return;
+    if (trigger === lastTriggerRef.current) return;
+    lastTriggerRef.current = trigger;
+
+    const { w, h } = boundsRef.current;
+    if (!w || !h) return;
 
     const angle = Math.random() * 2 * Math.PI;
     const speed = 5 + Math.random() * 6;
@@ -86,48 +98,55 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
     const icon = iconsRef.current[Math.floor(Math.random() * iconsRef.current.length)];
     const id = Date.now() + Math.random();
 
-    setCoins(prev => {
+    setCoins((prev) => {
       const updated = [
         ...prev,
         {
           id,
           icon,
-          x: bounds.w / 2 - 18,
-          y: bounds.h / 2 - 18,
+          x: w / 2 - 18,
+          y: h / 2 - 18,
           vx,
           vy,
           heat: 0,
           stopped: false,
           life: 1,
-          speedFactor: speed / 10
-        }
+          speedFactor: speed / 10,
+        },
       ];
       return updated.slice(-Math.floor(40 * perf));
     });
-  }, [trigger, bounds, ready, perf]);
+  }, [trigger, ready, perf]);
 
   useEffect(() => {
     const step = () => {
+      if (document.hidden) {
+        raf.current = requestAnimationFrame(step);
+        return;
+      }
+
       const now = performance.now();
       fpsCheck.current.frames++;
       if (now - fpsCheck.current.t >= 1000) {
         const fps = fpsCheck.current.frames;
         const newPerf = fps < 45 ? Math.max(0.5, perf - 0.1) : Math.min(1, perf + 0.05);
-        setPerf(newPerf);
+        if (newPerf !== perf) setPerf(newPerf);
         fpsCheck.current = { t: now, frames: 0 };
       }
 
-      setCoins(prev =>
+      const { w, h } = boundsRef.current;
+
+      setCoins((prev) =>
         prev
-          .map(c => {
+          .map((c) => {
             let { x, y, vx, vy, heat, stopped, life, speedFactor } = c;
             x += vx;
             y += vy;
 
             const hitLeft = x <= 0;
-            const hitRight = x >= bounds.w - 36;
+            const hitRight = x >= w - 36;
             const hitTop = y <= 0;
-            const hitBottom = y >= bounds.h - 36;
+            const hitBottom = y >= h - 36;
 
             const speedNow = Math.sqrt(vx * vx + vy * vy);
             const impact = Math.min(1, speedNow / 12);
@@ -149,8 +168,8 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
               }
               if (hitRight) {
                 vx *= -0.9;
-                x = bounds.w - 36;
-                gx = bounds.w;
+                x = w - 36;
+                gx = w;
                 gy = y + 18;
                 sides.push('right');
               }
@@ -163,20 +182,22 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
               }
               if (hitBottom) {
                 vy *= -0.9;
-                y = bounds.h - 36;
+                y = h - 36;
                 gx = x + 18;
-                gy = bounds.h;
+                gy = h;
                 sides.push('bottom');
               }
 
               const corner = sides.length === 2;
-              setGlows(g => {
-                const updated = [
-                  ...g,
-                  { id: Math.random(), sides, x: gx, y: gy, opacity: 1, intensity, corner }
-                ];
-                return updated.slice(-Math.floor(25 * perf));
-              });
+              if (!corner) {
+                setGlows((g) => {
+                  const updated = [
+                    ...g,
+                    { id: Math.random(), sides, x: gx, y: gy, opacity: 1, intensity, corner },
+                  ];
+                  return updated.slice(-Math.floor(25 * perf));
+                });
+              }
             }
 
             vx *= 0.992;
@@ -192,13 +213,11 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
 
             return { ...c, x, y, vx, vy, heat, stopped, life, speedFactor };
           })
-          .filter(c => c.life > 0)
+          .filter((c) => c.life > 0)
       );
 
-      setGlows(prev =>
-        prev
-          .map(g => ({ ...g, opacity: g.opacity - 0.06 }))
-          .filter(g => g.opacity > 0)
+      setGlows((prev) =>
+        prev.map((g) => ({ ...g, opacity: g.opacity - 0.06 })).filter((g) => g.opacity > 0)
       );
 
       raf.current = requestAnimationFrame(step);
@@ -208,11 +227,11 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
     return () => {
       if (raf.current) cancelAnimationFrame(raf.current);
     };
-  }, [bounds, perf]);
+  }, [perf]);
 
   return (
     <>
-      {coins.map(c => {
+      {coins.map((c) => {
         const intensity = c.heat * perf;
         const glow = `drop-shadow(0 0 ${6 + intensity * (isMobile ? 10 : 18)}px rgba(${180 + intensity * 20}, ${100 + intensity * 40}, 255, ${0.8 - intensity * 0.3}))`;
         const burn = `brightness(${1 + intensity * 1.5}) saturate(${1 + intensity * 2})`;
@@ -237,13 +256,14 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
               transition: 'opacity 0.1s linear, transform 0.15s ease',
               willChange: 'transform, opacity, filter',
               contain: 'layout paint',
-              zIndex: 10
+              zIndex: 10,
             }}
           />
         );
       })}
 
-      {glows.map(g => {
+      {glows.map((g) => {
+        const { w, h } = boundsRef.current;
         const base = (isMobile ? 25 : 40) + g.intensity * (isMobile ? 15 : 25);
         const strip = Math.max(3, 4 + g.intensity * (isMobile ? 1.5 : 2.5));
         const coreColor = `rgba(255,255,255,${Math.min(1, g.opacity * 1.1 * g.intensity * perf)})`;
@@ -260,7 +280,7 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
                 style={{
                   position: 'absolute',
                   left: `${left}px`,
-                  top: side === 'top' ? '0' : `${bounds.h - strip}px`,
+                  top: side === 'top' ? '0' : `${h - strip}px`,
                   width: `${base}px`,
                   height: `${strip}px`,
                   background: `linear-gradient(90deg, transparent, ${coreColor}, ${softColor}, transparent)`,
@@ -268,7 +288,7 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
                   pointerEvents: 'none',
                   willChange: 'opacity, filter',
                   contain: 'layout paint',
-                  zIndex: 15
+                  zIndex: 15,
                 }}
               />
             );
@@ -280,7 +300,7 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
                 style={{
                   position: 'absolute',
                   top: `${top}px`,
-                  left: side === 'left' ? '0' : `${bounds.w - strip}px`,
+                  left: side === 'left' ? '0' : `${w - strip}px`,
                   height: `${base}px`,
                   width: `${strip}px`,
                   background: `linear-gradient(180deg, transparent, ${coreColor}, ${softColor}, transparent)`,
@@ -288,7 +308,7 @@ export default function CoinBurst({ trigger, containerRef }: Props) {
                   pointerEvents: 'none',
                   willChange: 'opacity, filter',
                   contain: 'layout paint',
-                  zIndex: 15
+                  zIndex: 15,
                 }}
               />
             );
