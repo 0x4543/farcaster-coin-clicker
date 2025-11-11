@@ -5,6 +5,8 @@ import CoinBurst from './components/CoinBurst';
 import { sdk } from '@farcaster/miniapp-sdk';
 import { ethers } from 'ethers';
 import './styles.css';
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
 
 function MainApp() {
   const { ready, authenticated, login } = usePrivy();
