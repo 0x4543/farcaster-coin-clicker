@@ -55,18 +55,8 @@ function MainApp() {
     await login();
   };
 
-  const handleCommunity = async () => {
-    const url = 'https://farcaster.xyz/~/search?query=%23coinclicker';
-    try {
-      const inMini = await sdk.isInMiniApp();
-      if (inMini) {
-        await sdk.actions.openUrl(url);
-      } else {
-        window.open(url, '_blank');
-      }
-    } catch {
-      window.open(url, '_blank');
-    }
+  const handleCommunity = () => {
+    alert('Community feature coming soon!');
   };
 
   const handleMint = async () => {
