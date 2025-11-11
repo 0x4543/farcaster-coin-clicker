@@ -105,6 +105,14 @@ body {
     box-shadow 0.15s ease;
   z-index: 3;
   user-select: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
+}
+
+.tap-circle * {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .tap-circle:active {
@@ -152,6 +160,8 @@ button {
   font-size: 0.9rem;
   cursor: pointer;
   transition: background 0.2s;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button.primary {
@@ -174,11 +184,6 @@ button:disabled {
 .locked-circle {
   cursor: pointer;
   opacity: 1;
-}
-
-button,
-.tap-circle {
-  outline: none;
 }
 
 button:focus,
