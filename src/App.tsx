@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PrivyProvider, usePrivy, useWallets } from '@privy-io/react-auth';
 import ChartCanvas from './components/ChartCanvas';
 import CoinBurst from './components/CoinBurst';
-import { getContract } from './contract';
 import { sdk } from '@farcaster/miniapp-sdk';
 import { ethers } from 'ethers';
 import './styles.css';
@@ -99,10 +98,12 @@ function MainApp() {
       }
 
       const signer = await provider.getSigner();
-      const contract = getContract(signer) as any;
+      const contractAddress = '0xBf584627D7050E9C3C34ED9bDeb404B2db6d97A1';
+      const abi = ['function mint() public'];
+      const contract = new ethers.Contract(contractAddress, abi, signer);
 
       try {
-        const gas = await contract.estimateGas.mint();
+        const gas = await contract.mint.estimateGas();
         const tx = await contract.mint({ gasLimit: gas });
         await tx.wait();
         setMinted(true);
