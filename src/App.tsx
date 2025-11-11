@@ -98,7 +98,7 @@ function MainApp() {
       }
 
       const signer = await provider.getSigner();
-      const contractAddress = '0xBf584627D7050E9C3C34ED9bDeb404B2db6d97A1';
+      const contractAddress = ethers.getAddress('0xbf584627d7050e9c3c34ed9bdeb404b2db6d97a1');
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
