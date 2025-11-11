@@ -1,6 +1,6 @@
 # 🪙 Farcaster Coin Clicker
 
-<p align="center">
+<p>
   <a href="https://farcaster.xyz/miniapps/DUHyXvDOjMVR/coin-clicker">
     <img src="https://img.shields.io/badge/Farcaster-Miniapp-6C47FF?logo=farcaster&logoColor=white" alt="Farcaster Miniapp">
   </a>
@@ -17,7 +17,9 @@
 
 **Farcaster Coin Clicker** is a playful Farcaster Mini App where users grow their virtual portfolio and mint an NFT on the **Base** network. Built for fun, engagement, and to explore the creative potential of Farcaster Mini Apps.
 
-![Preview](./public/screenshot.png)
+<p align="center">
+  <img src="./public/screenshot.png" alt="Preview" width="280" style="border-radius:12px;box-shadow:0 0 10px rgba(0,0,0,0.15);" />
+</p>
 
 ---
 
