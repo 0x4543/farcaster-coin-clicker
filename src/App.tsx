@@ -71,7 +71,7 @@ function MainApp() {
   };
 
   const handleCommunity = () => {
-    window.open('https://warpcast.com/~/search?query=%23coinclicker', '_blank');
+    window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
   };
 
   const handleMint = async () => {

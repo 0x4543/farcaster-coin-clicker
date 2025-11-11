@@ -1,12 +1,12 @@
 {
-  "headers": [
+  "redirects": [
     {
       "source": "/.well-known/farcaster.json",
-      "headers": [
-        { "key": "Content-Type", "value": "application/json" },
-        { "key": "Cache-Control", "value": "public, max-age=3600" }
-      ]
-    },
+      "destination": "https://api.farcaster.xyz/miniapps/hosted-manifest/019a7142-cfdf-d94a-2956-01d2c7145ce9",
+      "permanent": false
+    }
+  ],
+  "headers": [
     {
       "source": "/(.*)",
       "headers": [
