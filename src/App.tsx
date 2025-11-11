@@ -3,6 +3,7 @@ import { PrivyProvider, usePrivy, useWallets } from '@privy-io/react-auth';
 import ChartCanvas from './components/ChartCanvas';
 import CoinBurst from './components/CoinBurst';
 import { getContract, getReadContract } from './contract';
+import { sdk } from '@farcaster/miniapp-sdk';
 import { ethers } from 'ethers';
 import './styles.css';
 
@@ -21,6 +22,10 @@ function MainApp() {
   const connected = ready && authenticated && wallets.length > 0;
   const walletAddr = connected ? wallets[0].address : '';
   const shortAddr = walletAddr ? `${walletAddr.slice(0, 6)}...${walletAddr.slice(-4)}` : '';
+
+  useEffect(() => {
+    sdk.actions.ready();
+  }, []);
 
   useEffect(() => {
     if (!ready || !connected || !wallets[0]) return;
