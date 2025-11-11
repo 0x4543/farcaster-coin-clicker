@@ -57,7 +57,7 @@ function MainApp() {
   };
 
   const handleCommunity = async () => {
-    const url = 'https://warpcast.com/~/search?query=%23coinclicker';
+    const url = 'https://farcaster.xyz/~/search?query=%23coinclicker';
     try {
       const inMini = await sdk.isInMiniApp();
       if (inMini) {
