@@ -70,8 +70,19 @@ function MainApp() {
     await login();
   };
 
-  const handleCommunity = () => {
-    window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
+  const handleCommunity = async () => {
+    const url = 'https://farcaster.xyz/~/search?q=%23coinclicker';
+    try {
+      const inMini = await sdk.isInMiniApp();
+      if (inMini) {
+        await sdk.actions.ready();
+        await sdk.actions.openUrl(url);
+      } else {
+        window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
+      }
+    } catch {
+      window.open('https://farcaster.xyz/~/search/recent?q=%23coinclicker', '_blank');
+    }
   };
 
   const handleMint = async () => {
