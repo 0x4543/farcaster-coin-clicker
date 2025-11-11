@@ -7,7 +7,7 @@
   "iconUrl": "https://farcaster-coin-clicker.vercel.app/icon-1024.png",
   "splashImageUrl": "https://farcaster-coin-clicker.vercel.app/splash-200.png",
   "splashBackgroundColor": "#0c0c10",
-  "imageUrl": "https://farcaster-coin-clicker.vercel.app/og-1024x682.png",
+  "imageUrl": "https://farcaster-coin-clicker.vercel.app/og-1200x630.png",
   "requiredChains": ["eip155:8453"],
   "tags": ["games", "base", "nft"],
   "accountAssociation": {
