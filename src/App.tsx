@@ -63,10 +63,9 @@ function MainApp() {
 
   const handleShare = () => {
     const tag = '#coinclicker';
-    const appEmbed = 'https://farcaster.xyz/miniapps/DUHyXvDOjMVR/coin-clicker';
+    const appUrl = 'https://farcaster.xyz/miniapps/DUHyXvDOjMVR/coin-clicker';
     const text = `🎯 I just grew my portfolio to $${portfolio} in Coin Clicker!\n${tag}`;
-    const composerUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(appEmbed)}`;
-    window.open(composerUrl, '_blank');
+    openFarcasterComposer(text, 'https://farcaster.xyz/miniapps/DUHyXvDOjMVR/coin-clicker');
   };
 
   const handleConnect = async () => {
