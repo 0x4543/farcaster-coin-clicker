@@ -99,17 +99,33 @@ function MainApp() {
       }
 
       const signer = await provider.getSigner();
-      const address = await signer.getAddress();
-      const contract = getContract(signer);
-      const gas = await contract.mint.estimateGas({ from: address });
-      const tx = await contract.mint({ gasLimit: gas });
-      await tx.wait();
-      setMinted(true);
-      alert('NFT minted successfully!');
+      const contract = getContract(signer) as any;
+
+      try {
+        const gas = await contract.estimateGas.mint();
+        const tx = await contract.mint({ gasLimit: gas });
+        await tx.wait();
+        setMinted(true);
+        alert('NFT minted successfully!');
+      } catch (err: any) {
+        if (err.code === 'ACTION_REJECTED') {
+          alert('Transaction cancelled by user.');
+          return;
+        }
+        if (err.code === 'CALL_EXCEPTION') {
+          if (!err.data) {
+            alert('Mint failed: NFT might already be minted or mint conditions not met.');
+          } else {
+            alert(`Mint failed: ${err.reason || err.message}`);
+          }
+          return;
+        }
+        throw err;
+      }
     } catch (err: any) {
+      console.error('Mint error:', err);
       const msg = String(err?.reason || err?.message || err);
       if (msg.toLowerCase().includes('already minted')) setMinted(true);
-      console.error(err);
       alert(`Mint failed:\n${msg}`);
     } finally {
       setMinting(false);
