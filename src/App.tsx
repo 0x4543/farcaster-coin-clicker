@@ -74,6 +74,7 @@ function MainApp() {
     try {
       if (!connected || !wallets[0]) return;
       setMinting(true);
+
       const wallet = wallets[0];
       const eipProvider = await wallet.getEthereumProvider();
       let provider = new ethers.BrowserProvider(eipProvider);
@@ -81,17 +82,27 @@ function MainApp() {
 
       if (network.chainId !== 8453n) {
         await eipProvider.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x2105' }],
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x2105',
+              chainName: 'Base',
+              nativeCurrency: { name: 'Base', symbol: 'ETH', decimals: 18 },
+              rpcUrls: ['https://mainnet.base.org'],
+              blockExplorerUrls: ['https://basescan.org'],
+            },
+          ],
         });
         provider = new ethers.BrowserProvider(eipProvider);
         network = await provider.getNetwork();
-        if (network.chainId !== 8453n) throw new Error('Network switch to Base failed');
+        if (network.chainId !== 8453n) throw new Error('Failed to switch to Base');
       }
 
       const signer = await provider.getSigner();
+      const address = await signer.getAddress();
       const contract = getContract(signer);
-      const tx = await contract.mint();
+      const gas = await contract.mint.estimateGas({ from: address });
+      const tx = await contract.mint({ gasLimit: gas });
       await tx.wait();
       setMinted(true);
       alert('NFT minted successfully!');
