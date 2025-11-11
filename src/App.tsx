@@ -24,7 +24,12 @@ function MainApp() {
   const shortAddr = walletAddr ? `${walletAddr.slice(0, 6)}...${walletAddr.slice(-4)}` : '';
 
   useEffect(() => {
-    sdk.actions.ready();
+    (async () => {
+      const inMini = await sdk.isInMiniApp();
+      if (inMini) {
+        await sdk.actions.ready();
+      }
+    })();
   }, []);
 
   useEffect(() => {
