@@ -8,7 +8,7 @@
     "splashImageUrl": "https://farcaster-coin-clicker.vercel.app/splash-200.png",
     "splashBackgroundColor": "#000000",
     "webhookUrl": "https://farcaster-coin-clicker.vercel.app/api/webhook",
-    "subtitle": "Grow your portfolio and share your success",
+    "subtitle": "Click. Grow. Mint NFT",
     "description": "Simple tap game with onchain mint on Base",
     "primaryCategory": "games",
     "tags": ["games", "nft", "base", "clicker", "coins"],
