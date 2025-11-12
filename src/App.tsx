@@ -91,8 +91,7 @@ function MainApp() {
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
-      const inMini = await sdk.isInMiniApp();
-      const tx = inMini ? await contract.mint({ gasLimit: 150000 }) : await contract.mint();
+      const tx = await contract.mint();
 
       if (tx?.hash) {
         setMinted(true);
