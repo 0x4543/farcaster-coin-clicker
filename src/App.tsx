@@ -61,6 +61,10 @@ function MainApp() {
   };
 
   const handleConnect = async () => {
+    if (authenticated) {
+      setConnected(true);
+      return;
+    }
     await login();
   };
 
