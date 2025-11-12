@@ -87,34 +87,20 @@ function MainApp() {
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
-      try {
-        const tx = await contract.mint();
-        if (tx?.hash) {
-          setMinted(true);
-          alert('NFT minted successfully!');
-        } else {
-          throw new Error('Transaction did not return a hash');
-        }
-      } catch (err: any) {
-        if (err.code === 'ACTION_REJECTED') {
-          alert('Transaction cancelled by user.');
-          return;
-        }
-        if (err.code === 'CALL_EXCEPTION') {
-          if (!err.data) {
-            alert('Mint failed: NFT might already be minted or mint conditions not met.');
-          } else {
-            alert(`Mint failed: ${err.reason || err.message}`);
-          }
-          return;
-        }
-        throw err;
+      const tx = await contract.mint();
+      if (tx?.hash) {
+        setMinted(true);
+        alert('NFT minted successfully!');
+      } else {
+        throw new Error('Transaction did not return a hash');
       }
     } catch (err: any) {
       console.error('Mint error:', err);
-      const msg = String(err?.reason || err?.message || err);
-      if (msg.toLowerCase().includes('already minted')) setMinted(true);
-      alert(`Mint failed:\n${msg}`);
+      if (err.code === 'ACTION_REJECTED') {
+        alert('Transaction cancelled by user.');
+        return;
+      }
+      alert(`Mint failed:\n${err.reason || err.message || err}`);
     } finally {
       setMinting(false);
     }
