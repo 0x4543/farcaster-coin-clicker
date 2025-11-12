@@ -24,16 +24,21 @@ function MainApp() {
   useEffect(() => {
     (async () => {
       const inMini = await sdk.isInMiniApp();
+      let provider: any = null;
+
       if (inMini) {
         await sdk.actions.ready();
-        const provider = await sdk.wallet.getEthereumProvider();
-        if (provider) {
-          const ethersProvider = new ethers.BrowserProvider(provider as any);
-          const signer = await ethersProvider.getSigner();
-          const addr = await signer.getAddress();
-          setWalletAddr(addr);
-          setConnected(true);
-        }
+        provider = await sdk.wallet.getEthereumProvider();
+      } else if (window.ethereum) {
+        provider = window.ethereum;
+      }
+
+      if (provider) {
+        const ethersProvider = new ethers.BrowserProvider(provider);
+        const signer = await ethersProvider.getSigner();
+        const addr = await signer.getAddress();
+        setWalletAddr(addr);
+        setConnected(true);
       }
     })();
   }, []);
@@ -76,28 +81,28 @@ function MainApp() {
     try {
       setMinting(true);
 
-      const rawProvider = await sdk.wallet.getEthereumProvider();
-      if (!rawProvider) throw new Error('Farcaster provider not available');
+      let rawProvider = await sdk.wallet.getEthereumProvider();
+      if (!rawProvider) {
+        if (window.ethereum) {
+          rawProvider = window.ethereum;
+        } else {
+          throw new Error('No wallet provider found. Open inside Farcaster or connect a wallet.');
+        }
+      }
 
       const provider = new ethers.BrowserProvider(rawProvider as any);
-      let network;
-      try {
-        network = await provider.getNetwork();
-      } catch {
-        network = { chainId: 8453n };
-      }
+      const signer = await provider.getSigner();
+      const network = await provider.getNetwork();
 
       if (network.chainId !== 8453n) {
-        throw new Error('Please switch to Base network inside Farcaster');
+        throw new Error('Please switch to Base network');
       }
 
-      const signer = await provider.getSigner();
       const contractAddress = ethers.getAddress('0xa95ac67fdec773af78c380f3bbff82e4c1011c2e');
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
       const tx = await contract.mint();
-
       if (tx?.hash) {
         setMinted(true);
         alert('NFT minted successfully!');
