@@ -8,6 +8,8 @@ import './styles.css';
 import { Buffer } from 'buffer';
 window.Buffer = Buffer;
 
+const MINT_KEY_PREFIX = 'cc_minted_';
+
 function MainApp() {
   const { ready, authenticated, login } = usePrivy();
 
@@ -20,11 +22,6 @@ function MainApp() {
   const [walletAddr, setWalletAddr] = useState('');
 
   const interactRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const storedMinted = localStorage.getItem('coinClickerMinted') === 'true';
-    if (storedMinted) setMinted(true);
-  }, []);
 
   useEffect(() => {
     (async () => {
@@ -44,6 +41,9 @@ function MainApp() {
         const addr = await signer.getAddress();
         setWalletAddr(addr);
         setConnected(true);
+
+        const stored = localStorage.getItem(MINT_KEY_PREFIX + addr.toLowerCase());
+        if (stored === '1') setMinted(true);
       }
     })();
   }, []);
@@ -98,12 +98,13 @@ function MainApp() {
       }
 
       const provider = new ethers.BrowserProvider(rawProvider);
+      const signer = await provider.getSigner();
+      const addr = await signer.getAddress();
       const network = await provider.getNetwork();
       if (network.chainId !== 8453n) {
         throw new Error('Please switch to Base network');
       }
 
-      const signer = await provider.getSigner();
       const contractAddress = ethers.getAddress('0xa95ac67fdec773af78c380f3bbff82e4c1011c2e');
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
@@ -111,18 +112,29 @@ function MainApp() {
       let tx;
       if (inMini) {
         tx = await contract.mint({ gasLimit: 200000n });
+        if (tx?.hash) {
+          setMinted(true);
+          try {
+            localStorage.setItem(MINT_KEY_PREFIX + addr.toLowerCase(), '1');
+          } catch {}
+          alert('NFT minted successfully!');
+        } else {
+          throw new Error('Transaction did not return a hash');
+        }
+        return;
       } else {
         try {
           tx = await contract.mint();
-        } catch (e: any) {
+        } catch {
           tx = await contract.mint({ gasLimit: 220000n });
         }
+        await tx.wait();
+        setMinted(true);
+        try {
+          localStorage.setItem(MINT_KEY_PREFIX + addr.toLowerCase(), '1');
+        } catch {}
+        alert('NFT minted successfully!');
       }
-
-      await tx.wait();
-      setMinted(true);
-      localStorage.setItem('coinClickerMinted', 'true');
-      alert('NFT minted successfully!');
     } catch (err: any) {
       console.error('Mint error:', err);
       if (err?.code === 'ACTION_REJECTED') {
