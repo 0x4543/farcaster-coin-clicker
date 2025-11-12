@@ -22,6 +22,11 @@ function MainApp() {
   const interactRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const storedMinted = localStorage.getItem('coinClickerMinted') === 'true';
+    if (storedMinted) setMinted(true);
+  }, []);
+
+  useEffect(() => {
     (async () => {
       const inMini = await sdk.isInMiniApp();
       let provider: any = null;
@@ -116,6 +121,7 @@ function MainApp() {
 
       await tx.wait();
       setMinted(true);
+      localStorage.setItem('coinClickerMinted', 'true');
       alert('NFT minted successfully!');
     } catch (err: any) {
       console.error('Mint error:', err);
