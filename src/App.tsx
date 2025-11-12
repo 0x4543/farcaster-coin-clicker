@@ -102,7 +102,8 @@ function MainApp() {
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
-      const tx = await contract.mint();
+      const tx = await contract.mint({ gasLimit: 200000n });
+
       if (tx?.hash) {
         setMinted(true);
         alert('NFT minted successfully!');
@@ -113,6 +114,10 @@ function MainApp() {
       console.error('Mint error:', err);
       if (err.code === 'ACTION_REJECTED') {
         alert('Transaction cancelled by user.');
+        return;
+      }
+      if (err.code === 'CALL_EXCEPTION' || err.code === 'UNPREDICTABLE_GAS_LIMIT') {
+        alert('Mint failed: please retry, network simulation failed.');
         return;
       }
       alert(`Mint failed:\n${err.reason || err.message || err}`);
