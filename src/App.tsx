@@ -80,7 +80,12 @@ function MainApp() {
       if (!rawProvider) throw new Error('Farcaster provider not available');
 
       const provider = new ethers.BrowserProvider(rawProvider as any);
-      const network = await provider.getNetwork();
+      let network;
+      try {
+        network = await provider.getNetwork();
+      } catch {
+        network = { chainId: 8453n };
+      }
 
       if (network.chainId !== 8453n) {
         throw new Error('Please switch to Base network inside Farcaster');
