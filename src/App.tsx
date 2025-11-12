@@ -29,8 +29,8 @@ function MainApp() {
       if (inMini) {
         await sdk.actions.ready();
         provider = await sdk.wallet.getEthereumProvider();
-      } else if (window.ethereum) {
-        provider = window.ethereum;
+      } else if ((window as any).ethereum) {
+        provider = (window as any).ethereum;
       }
 
       if (provider) {
@@ -81,46 +81,49 @@ function MainApp() {
     try {
       setMinting(true);
 
-      let rawProvider = await sdk.wallet.getEthereumProvider();
-      if (!rawProvider) {
-        if (window.ethereum) {
-          rawProvider = window.ethereum;
-        } else {
-          throw new Error('No wallet provider found. Open inside Farcaster or connect a wallet.');
-        }
+      const inMini = await sdk.isInMiniApp().catch(() => false);
+      let rawProvider: any = null;
+
+      if (inMini) {
+        rawProvider = await sdk.wallet.getEthereumProvider();
+      } else if ((window as any).ethereum) {
+        rawProvider = (window as any).ethereum;
+      } else {
+        throw new Error('No wallet provider found. Open inside Farcaster or connect a wallet.');
       }
 
-      const provider = new ethers.BrowserProvider(rawProvider as any);
-      const signer = await provider.getSigner();
+      const provider = new ethers.BrowserProvider(rawProvider);
       const network = await provider.getNetwork();
-
       if (network.chainId !== 8453n) {
         throw new Error('Please switch to Base network');
       }
 
+      const signer = await provider.getSigner();
       const contractAddress = ethers.getAddress('0xa95ac67fdec773af78c380f3bbff82e4c1011c2e');
       const abi = ['function mint() public'];
       const contract = new ethers.Contract(contractAddress, abi, signer);
 
-      const tx = await contract.mint({ gasLimit: 200000n });
-
-      if (tx?.hash) {
-        setMinted(true);
-        alert('NFT minted successfully!');
+      let tx;
+      if (inMini) {
+        tx = await contract.mint({ gasLimit: 200000n });
       } else {
-        throw new Error('Transaction did not return a hash');
+        try {
+          tx = await contract.mint();
+        } catch (e: any) {
+          tx = await contract.mint({ gasLimit: 220000n });
+        }
       }
+
+      await tx.wait();
+      setMinted(true);
+      alert('NFT minted successfully!');
     } catch (err: any) {
       console.error('Mint error:', err);
-      if (err.code === 'ACTION_REJECTED') {
+      if (err?.code === 'ACTION_REJECTED') {
         alert('Transaction cancelled by user.');
         return;
       }
-      if (err.code === 'CALL_EXCEPTION' || err.code === 'UNPREDICTABLE_GAS_LIMIT') {
-        alert('Mint failed: please retry, network simulation failed.');
-        return;
-      }
-      alert(`Mint failed:\n${err.reason || err.message || err}`);
+      alert(`Mint failed:\n${err?.reason || err?.message || String(err)}`);
     } finally {
       setMinting(false);
     }
