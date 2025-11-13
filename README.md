@@ -5,7 +5,7 @@
     <img alt="Farcaster Miniapp" src="https://img.shields.io/badge/Farcaster-Miniapp-6E56CF?logo=farcaster&logoColor=fff" style="display:inline-block;vertical-align:middle;margin-right:4px;">
   </a>
   <a href="https://github.com/0x4543/farcaster-coin-clicker/stargazers">
-    <img alt="Stars" src="https://img.shields.io/github/stars/0x4543/farcaster-coin-clicker?style=flat&logo=github" style="display:inline-block;vertical-align:middle;margin-right:4px;">
+    <img alt="Stars" src="https://img.shields.io/github/stars/0x4543/farcaster-coin-clicker?style=flat" style="display:inline-block;vertical-align:middle;margin-right:4px;">
   </a>
   <a href="https://github.com/0x4543/farcaster-coin-clicker/blob/main/LICENSE">
     <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen?style=flat" style="display:inline-block;vertical-align:middle;margin-right:4px;">
@@ -101,7 +101,7 @@ The project is optimized for **Vercel** deployment.
 3. Add your environment variables in Vercel settings.
 4. Deploy 🚀
 
-Live demo: _(add your Vercel link here)_
+Live demo: https://farcaster-coin-clicker.vercel.app/
 
 ---
 
