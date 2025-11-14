@@ -21,6 +21,12 @@
   <img src="./public/screenshot.png" alt="Preview" width="280" style="border-radius:12px;box-shadow:0 0 10px rgba(0,0,0,0.15);" />
 </p>
 
+<p>
+  <a href="https://farcaster-coin-clicker.vercel.app/" style="font-size:16px;padding:10px 16px;background:#5b4af1;color:white;text-decoration:none;border-radius:8px;">
+    ▶️ Open Coin Clicker
+  </a>
+</p>
+
 ---
 
 ## ✨ Overview
