@@ -127,6 +127,16 @@ Live demo: https://farcaster-coin-clicker.vercel.app/
 
 ---
 
+## 🙌 Support the Project
+
+If you enjoy Coin Clicker and want to support future miniapp experiments, a star on GitHub is always appreciated.
+
+<a href="https://github.com/0x4543/farcaster-coin-clicker/stargazers">
+  ⭐ Star on GitHub
+</a>
+
+---
+
 ## 📄 License
 
 [MIT License](./LICENSE)
